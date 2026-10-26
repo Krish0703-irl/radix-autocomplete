@@ -1,0 +1,8 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    { "type": "java", "name": "Autocomplete demo (Main)", "request": "launch", "mainClass": "Main", "console": "integratedTerminal", "cwd": "${workspaceFolder}" },
+    { "type": "java", "name": "Self tests", "request": "launch", "mainClass": "SelfTest", "console": "integratedTerminal", "cwd": "${workspaceFolder}" },
+    { "type": "java", "name": "Benchmark", "request": "launch", "mainClass": "Benchmark", "console": "integratedTerminal", "cwd": "${workspaceFolder}" }
+  ]
+}
