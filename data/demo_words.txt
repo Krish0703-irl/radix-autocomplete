@@ -1,0 +1,11 @@
+# Small word list for `load data/demo_words.txt`:  word [frequency]
+apple 50
+application 40
+apply 35
+applied 20
+apt 10
+banana 30
+band 25
+bandwidth 15
+bank 45
+banking 12

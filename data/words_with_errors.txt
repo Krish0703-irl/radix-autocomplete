@@ -1,0 +1,9 @@
+# Edge-case file: good lines load, bad lines are reported with their line number and skipped.
+hello 10
+Hello 20          # same word in another case -> updates the frequency
+world
+ice cream 5       # two words -> rejected
+c@t 3             # symbol -> rejected
+zebra -4          # negative frequency -> rejected
+quiz ten          # frequency not a number -> rejected
+naïve 7           # accented letters are fine
