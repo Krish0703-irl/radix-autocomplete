@@ -47,15 +47,19 @@ public final class Words {
         return s;
     }
 
-    /** Parses a frequency: a whole number from 0 up. */
+    /** Parses a frequency: a whole number from 0 up, optionally with k (thousand) or m (million): 1.5k, 2m. */
     public static long frequency(String raw) {
-        try {
-            long f = Long.parseLong(raw.trim());
-            if (f < 0) throw new IllegalArgumentException("frequency " + f + " is negative");
-            return f;
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("frequency '" + raw.trim() + "' is not a whole number");
+        String s = raw.trim().toLowerCase(Locale.ROOT);
+        if (s.startsWith("-")) throw new IllegalArgumentException("frequency " + raw.trim() + " is negative");
+        long mult = 1;
+        if (s.endsWith("k")) { mult = 1_000; s = s.substring(0, s.length() - 1); }
+        else if (s.endsWith("m")) { mult = 1_000_000; s = s.substring(0, s.length() - 1); }
+        if (!s.matches("\\d{1,12}(\\.\\d{1,6})?")) {
+            throw new IllegalArgumentException("frequency '" + raw.trim() + "' is not a number like 250, 1.5k or 2m");
         }
+        double v = Double.parseDouble(s) * mult;
+        if (v != Math.rint(v)) throw new IllegalArgumentException("frequency '" + raw.trim() + "' is not a whole number");
+        return (long) v;
     }
 
     /** Parses k (how many suggestions): 1 to 1000. */
