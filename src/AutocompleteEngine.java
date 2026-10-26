@@ -19,6 +19,7 @@ public class AutocompleteEngine {
     public static String WORD_FILE = "data/words_50k.txt";
 
     private final RadixTree tree = new RadixTree();
+    private final java.util.ArrayDeque<String> history = new java.util.ArrayDeque<>();   // newest first
 
     public RadixTree tree() { return tree; }
 
@@ -44,7 +45,18 @@ public class AutocompleteEngine {
      * suggested next time (frequency + 1). Returns the new frequency, or -1 if unknown.
      */
     public long select(String rawWord) {
-        return tree.boost(Words.word(rawWord), 1);
+        String word = Words.word(rawWord);
+        long f = tree.boost(word, 1);
+        if (f >= 0) {
+            history.addFirst(word);
+            if (history.size() > 10) history.removeLast();
+        }
+        return f;
+    }
+
+    /** The last 10 selected words, newest first. */
+    public List<String> history() {
+        return new ArrayList<>(history);
     }
 
     /** When nothing starts with the prefix: the longest part of it that does match, or "" */
