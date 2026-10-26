@@ -56,6 +56,7 @@ public class Main {
                 case "count":    cmdCount(w); break;
                 case "select":   cmdSelect(w); break;
                 case "trace":    cmdTrace(w); break;
+                case "unique":   cmdUnique(w); break;
                 case "tree":     cmdTree(w); break;
                 case "stats":    cmdStats(); break;
                 case "sample":   cmdSample(); break;
@@ -91,6 +92,7 @@ public class Main {
         System.out.println(" count <prefix>             how many words start with the prefix");
         System.out.println(" select <word>              the user picked this suggestion: frequency + 1");
         System.out.println(" trace <prefix>             show how the prefix is found edge by edge");
+        System.out.println(" unique <word>              shortest prefix that identifies the word");
         System.out.println(" tree [prefix]              draw the tree (or the part under a prefix)");
         System.out.println(" stats                      words, nodes, height, characters stored");
         System.out.println(" sample | words             load 25 demo words | the 50,000-word English list");
@@ -181,6 +183,16 @@ public class Main {
         long f = engine.select(w[1]);
         System.out.println(f < 0 ? "'" + Words.word(w[1]) + "' is not in the dictionary"
                                  : Words.word(w[1]) + " selected: frequency is now " + f);
+    }
+
+    private void cmdUnique(String[] w) {
+        need(w, 2, "unique <word>");
+        most(w, 2, "unique <word>");
+        String word = Words.word(w[1]);
+        String u = engine.tree().shortestUniquePrefix(word);
+        if (u == null) System.out.println("'" + word + "' is not in the dictionary");
+        else if (u.equals(word) && engine.tree().countPrefix(word) > 1) System.out.println("no shorter prefix: other words start with '" + word + "'");
+        else System.out.println("'" + u + "' is enough to identify '" + word + "'");
     }
 
     private void cmdTrace(String[] w) {

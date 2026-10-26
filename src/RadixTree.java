@@ -410,6 +410,24 @@ public class RadixTree implements Dictionary {
         return i;
     }
 
+    /**
+     * The shortest start of `word` that no other stored word shares, or null if
+     * the word is not stored. Walks down until a subtree holds only this word
+     * (its cached `words` count is 1). If other words extend it, the whole word is needed.
+     */
+    public String shortestUniquePrefix(String word) {
+        if (frequency(word) < 0) return null;
+        Node node = root;
+        int i = 0;
+        while (i < word.length()) {
+            Node child = node.kids[find(node, word.charAt(i))];
+            if (child.words == 1) return word.substring(0, i + 1);
+            node = child;
+            i += child.label.length();
+        }
+        return word;
+    }
+
     /** Lines describing how `prefix` is matched edge by edge (for the trace command). */
     public List<String> trace(String prefix) {
         List<String> lines = new ArrayList<>();
