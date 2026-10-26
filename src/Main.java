@@ -55,6 +55,7 @@ public class Main {
                 case "prefix":   cmdPrefix(w); break;
                 case "count":    cmdCount(w); break;
                 case "select":   cmdSelect(w); break;
+                case "history":  cmdHistory(); break;
                 case "trace":    cmdTrace(w); break;
                 case "unique":   cmdUnique(w); break;
                 case "tree":     cmdTree(w); break;
@@ -91,6 +92,7 @@ public class Main {
         System.out.println(" prefix <prefix> [n]        all words with the prefix, alphabetical (default 20)");
         System.out.println(" count <prefix>             how many words start with the prefix");
         System.out.println(" select <word>              the user picked this suggestion: frequency + 1");
+        System.out.println(" history                    the last 10 selected words");
         System.out.println(" trace <prefix>             show how the prefix is found edge by edge");
         System.out.println(" unique <word>              shortest prefix that identifies the word");
         System.out.println(" tree [prefix]              draw the tree (or the part under a prefix)");
@@ -175,6 +177,11 @@ public class Main {
         most(w, 2, "count <prefix>");
         String prefix = Words.prefix(w[1]);
         System.out.println(engine.tree().countPrefix(prefix) + " word(s) start with '" + prefix + "'");
+    }
+
+    private void cmdHistory() {
+        List<String> h = engine.history();
+        System.out.println(h.isEmpty() ? "no words selected yet" : "last selected (newest first): " + String.join(", ", h));
     }
 
     private void cmdSelect(String[] w) {
