@@ -35,6 +35,7 @@ public class SelfTest {
         t.deleting();
         t.ranking();
         t.prefixQueries();
+        t.improvements();
         t.randomised();
         t.realWords();
         out.accept("");
@@ -157,6 +158,19 @@ public class SelfTest {
         check("list limit respected", t.listPrefix("", 5).size() == 5);
         check("longest known part of 'carz' is 'car'", e.knownPart("carz").equals("car"));
         check("longest known part of 'qq' is ''", e.knownPart("qq").isEmpty());
+    }
+
+    private void improvements() {
+        out.accept("Team improvements");
+        check("frequency 1.5k = 1500 and 2m = 2,000,000", Words.frequency("1.5k") == 1500 && Words.frequency("2M") == 2_000_000);
+        rejects("frequency 1.2345k (not whole)", () -> Words.frequency("1.2345k"));
+        AutocompleteEngine e = sample();
+        check("shortest unique prefix of catalog is 'cata'", e.tree().shortestUniquePrefix("catalog").equals("cata"));
+        check("car has no shorter unique prefix (card, care... extend it)", e.tree().shortestUniquePrefix("car").equals("car"));
+        check("unknown word has no unique prefix", e.tree().shortestUniquePrefix("zebra") == null);
+        e.select("cat");
+        e.select("dog");
+        check("history lists selections newest first", e.history().equals(List.of("dog", "cat")));
     }
 
     /** Random inserts, updates and deletes on a tiny alphabet, so words share prefixes heavily. */
