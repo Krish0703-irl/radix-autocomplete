@@ -1,4 +1,29 @@
-# Design and Implementation of a Radix Tree Based Autocomplete and Prefix Search System
+# Radix Tree Autocomplete
+
+A Java autocomplete demo powered by a **compressed radix tree**. It returns
+frequency-ranked suggestions as you type, counts and lists prefix matches, and
+learns from selections by increasing the chosen word's frequency. The project
+also compares the radix tree with `TreeMap`, `HashMap`, and a standard trie.
+
+## Live demo
+
+The screenshots below are from the running Swing demo, using the included
+50,000-word dictionary.
+
+| Prefix search | Selection learning |
+|---|---|
+| ![Suggestions ranked for the prefix “ca”](docs/screenshots/01-prefix-ranking.png) | ![Selecting “can” updates its frequency and history](docs/screenshots/02-selection-history.png) |
+
+| No matching words | A new word learned from the demo |
+|---|---|
+| ![No matches for an unknown prefix](docs/screenshots/03-no-match.png) | ![The new word is stored and appears in selection history](docs/screenshots/04-new-word-learned.png) |
+
+## Automated tests
+
+The current test run reports **56 passed, 0 failed**. Coverage includes input
+validation, radix-tree edge splitting and merging, prefix queries, top-k ranking,
+20,000 randomized operations checked against three baseline implementations,
+and prefix checks over a 50,000-word dictionary.
 
 A search box suggests words as you type. This project stores a dictionary in a
 **radix tree** (compressed trie) and answers, for any typed prefix:
@@ -28,10 +53,9 @@ Requirements: JDK 17 or newer.
 **Terminal**
 ```bash
 ./run.sh            # interactive demo
-./run.sh test       # 50 automated checks
+./run.sh test       # automated checks
 ./run.sh bench      # benchmark (about 2 minutes)
 ```
-
 ## Commands
 
 | Command | Example | What it does |
